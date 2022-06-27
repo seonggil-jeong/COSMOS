@@ -36,7 +36,7 @@ public class UserEntity {
     @NotNull
     private String userEmail;
 
-    @Column(length = 50)
+    @Column(length = 200) // 암호화되어 들어가기 때문에 크기 변경
     @NotNull
     private String userPassword;
 

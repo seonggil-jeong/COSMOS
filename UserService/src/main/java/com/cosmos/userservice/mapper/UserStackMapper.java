@@ -13,6 +13,5 @@ public interface UserStackMapper {
 
     UserStackEntity userStackDtoToUserStackEntity(UserStackDto userStackDto);
 
-    @Mapping(target = "user", ignore = true) // Entity 를 Dto 로 변환 시 user (UserEntity) 는 포함 X
     UserStackDto userStackEntityToUserStackDto(UserStackEntity userStackEntity);
 }
