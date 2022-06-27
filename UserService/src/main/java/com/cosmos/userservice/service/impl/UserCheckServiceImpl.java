@@ -46,6 +46,13 @@ public class UserCheckServiceImpl implements UserCheckService {
         }
         // 사용자 정보가 없을 경우 Exception 실행
         throw new NotFoundException("사용자 정보를 찾을 수 없습니다");
+    }
 
+
+
+    @Override
+    public Boolean existsByUserId(String userId) {
+
+        return userRepository.existsByUserId(userId);
     }
 }
