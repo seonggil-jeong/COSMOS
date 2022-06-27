@@ -6,4 +6,7 @@ public interface UserCheckService {
      */
 
     boolean checkUserPassword(String userId, String userPassword);
+
+    Boolean existsByUserId(String userId);
+
 }
