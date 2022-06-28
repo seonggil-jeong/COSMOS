@@ -58,13 +58,14 @@ public class TokenProvider implements InitializingBean {
                 .setSubject(authentication.getName())
                 .claim(AUTHORITIES_KEY, authorities)
                 .signWith(key, SignatureAlgorithm.HS512)
-                .setExpiration(validity)
+                .setExpiration(validity) //토큰 만료시간
                 .compact();
     }
 
 
     //JWT에 담긴 정보를 통해 Authentication객체를 리턴
     public Authentication getAuthentication(String token) {
+        //토큰을 이용해서 claim생성
         Claims claims = Jwts
                 .parserBuilder()
                 .setSigningKey(key)
@@ -72,6 +73,7 @@ public class TokenProvider implements InitializingBean {
                 .parseClaimsJws(token)
                 .getBody();
 
+        //claim에서 권한정보를 빼내서 authentication 객체 리턴
         Collection<? extends GrantedAuthority> authorities =
                 Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
                         .map(SimpleGrantedAuthority::new)
