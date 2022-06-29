@@ -1,5 +1,6 @@
 package com.cosmos.userservice.dto;
 
+import com.cosmos.userservice.jpa.entity.UserLinkEntity;
 import com.cosmos.userservice.jpa.entity.UserStackEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,6 +25,8 @@ public class UserDto {
     private String userLocation;
     private int userRank;
     private int userStatus;
+
     private List<UserStackEntity> userStackEntityList;
+    private List<UserLinkEntity> userLinkEntityList;
 
 }

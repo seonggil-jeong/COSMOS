@@ -13,5 +13,6 @@ public interface UserStackMapper {
 
     UserStackEntity userStackDtoToUserStackEntity(UserStackDto userStackDto);
 
+    @Mapping(target = "user", ignore = true)
     UserStackDto userStackEntityToUserStackDto(UserStackEntity userStackEntity);
 }

@@ -12,5 +12,6 @@ public interface UserLinkMapper {
 
     UserLinkEntity userDtoToUserLinkEntity(UserLinkDto userLinkDto);
 
+    @Mapping(target = "user", ignore = true)
     UserLinkDto userLinkEntityToUserLinkDto(UserLinkEntity userLinkEntity);
 }
