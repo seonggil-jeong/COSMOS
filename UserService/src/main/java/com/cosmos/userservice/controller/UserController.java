@@ -60,4 +60,15 @@ public class UserController {
         return ResponseEntity.ok().body(userDto);
     }
 
+    @PostMapping("/reguser")
+    public ResponseEntity<String> registerUser(@RequestBody UserDto userDto) {
+        log.info("### Start!! registerUser Controller!!");
+
+        userService.createUser(userDto);
+
+        log.info("### Success!! registerUser Controller!!");
+
+        return ResponseEntity.status(HttpStatus.OK).body("회원가입 성공!!");
+    }
+
 }

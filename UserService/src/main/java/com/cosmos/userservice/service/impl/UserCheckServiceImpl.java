@@ -51,8 +51,36 @@ public class UserCheckServiceImpl implements UserCheckService {
 
 
     @Override
-    public Boolean existsByUserId(String userId) {
+    public boolean existsByUserId(String userId) {
 
-        return userRepository.existsByUserId(userId);
+        log.info("### UserCheckServiceImpl existsByUserId Start!!");
+
+        Optional<UserEntity> userEntityOptional = userRepository.findByUserId(userId);
+
+        // 중복된 아이디가 있으면 false 값 반환
+        if (userEntityOptional.isPresent()) {
+            log.info("### UserCheckServiceImpl 아이디 중복");
+            return false;
+        }
+        log.info("### UserCheckServiceImpl 중복된 아이디 없음");
+        // 중복된 아이다가 없으면 true 값 반환
+        return true;
+    }
+
+    @Override
+    public boolean existsByUserEmail(String userEmail) {
+
+        log.info("### UserCheckServiceImpl existsByUserEmail Start!!");
+
+        UserEntity userEntity = userRepository.findByUserEmail(userEmail);
+
+        // 중복된 이메일이 없으면 true 값 반환
+        if (userEntity == null) {
+            log.info("### UserCheckServiceImpl 중복된 이메일 없음");
+            return true;
+        }
+        // 중복된 이메일이 있으면 false 값 반환
+        log.info("### UserCheckServiceImpl 이메일 중복");
+        return false;
     }
 }
