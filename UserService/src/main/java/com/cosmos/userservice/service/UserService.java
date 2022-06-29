@@ -7,4 +7,6 @@ public interface UserService {
     void findId(String userEmail);
 
     void findPassword(String userId, String userEmail);
+
+    UserDto getUserInfoByUserId(String userId) throws Exception;
 }

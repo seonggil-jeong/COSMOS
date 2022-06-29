@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.UUID;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -74,4 +75,22 @@ public class UserServiceImpl implements UserService {
 
         mailUtil.sendMail(mailDto);
     }
+
+
+    @Override
+    public UserDto getUserInfoByUserId(String userId) throws Exception {
+        log.info(this.getClass().getName() + ".getUserInfoByUserId Start!");
+        Optional<UserEntity> userEntityOptional = userRepository.findByUserId(userId);
+
+        if (userEntityOptional.isPresent()) { // 사용자 정보가 있는 지 확인
+            // 사용자 정보가 있을 경우 Entity --> Dto 로 변환 후 return
+            UserDto userDto = UserMapper.INSTANCE.userEntityToUserDto(userEntityOptional.get());
+            log.info(this.getClass().getName() + ".getUserInfoByUserId End!");
+            return userDto;
+        }
+
+        throw new NotFoundException("사용자 정보를 찾을 수 없습니다"); // 정보가 없을 경우 404 Not Found
+
+    }
+
 }
