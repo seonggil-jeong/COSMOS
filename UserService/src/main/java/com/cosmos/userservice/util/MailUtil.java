@@ -18,10 +18,8 @@ public class MailUtil {
     @Value("${spring.mail.username}")
     private String myEmail;
 
-    public boolean sendMail(MailDto mailDto) {
-
-        log.info("### sendMail start !");
-        boolean res = true;
+    public void sendMail(MailDto mailDto) {
+        log.info("### sendMail.MailUtil start !");
 
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         simpleMailMessage.setTo(mailDto.getTo());
@@ -31,8 +29,6 @@ public class MailUtil {
         simpleMailMessage.setReplyTo(myEmail);
 
         mailSender.send(simpleMailMessage);
-
-        log.info("### sendMail end !");
-        return res;
+        log.info("### sendMail.MailUtil end !");
     }
 }

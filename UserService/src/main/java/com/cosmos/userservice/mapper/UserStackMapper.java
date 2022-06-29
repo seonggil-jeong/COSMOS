@@ -1,6 +1,5 @@
 package com.cosmos.userservice.mapper;
 
-import com.cosmos.userservice.dto.UserDto;
 import com.cosmos.userservice.dto.UserStackDto;
 import com.cosmos.userservice.jpa.entity.UserStackEntity;
 import org.mapstruct.Mapper;
