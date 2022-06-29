@@ -14,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -58,7 +59,7 @@ public class UserServiceImpl implements UserService {
 
         UserDto userDto = UserMapper.INSTANCE.userEntityToUserDto(userEntity);
 
-        String result = changePassword();
+        String result = UUID.randomUUID().toString().substring(0,8);
 
         userDto.setUserPassword(passwordEncoder.encode(result));
 
@@ -73,20 +74,4 @@ public class UserServiceImpl implements UserService {
 
         mailUtil.sendMail(mailDto);
     }
-
-    public static String changePassword() {
-        String result = "";
-        int idx = 0;
-
-        char[] charSet = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F',
-                'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
-
-        for (int i = 0; i < 10; i++) {
-            idx = (int) (charSet.length * Math.random());
-            result += charSet[idx];
-        }
-
-        return result;
-    }
-
 }
