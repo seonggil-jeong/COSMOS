@@ -13,9 +13,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -25,17 +28,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void findId(String userEmail) {
-        log.info("### findId.Service Start !");
-
         UserEntity userEntity = userRepository.findByUserEmail(userEmail);
 
         if (userEntity == null) {
             throw new NotFoundException("회원 정보가 없습니다. 이메일을 다시 확인해주세요.");
         }
 
-        UserDto userDto = new UserDto();
-        userDto.setUserId(userEntity.getUserId());
-        userDto.setUserEmail(userEntity.getUserEmail());
+        UserDto userDto = UserMapper.INSTANCE.userEntityToUserDto(userEntity);
 
         MailDto mailDto = new MailDto();
         mailDto.setTo(userDto.getUserEmail());
@@ -43,14 +42,10 @@ public class UserServiceImpl implements UserService {
         mailDto.setText("회원님의 아이디는 [ " + userDto.getUserId() + " ] 입니다.");
 
         mailUtil.sendMail(mailDto);
-
-        log.info("### findId.Service End !");
     }
 
     @Override
     public void findPassword(String userId, String userEmail) {
-        log.info("### findPassword.Service Start !");
-
         UserEntity userEntity = userRepository.findByUserEmail(userEmail);
 
         if (userEntity == null) {
@@ -61,40 +56,13 @@ public class UserServiceImpl implements UserService {
             throw new NotFoundException("아이디와 이메일의 정보가 맞지 않습니다. 다시 확인해주세요.");
         }
 
-        UserDto userDto = new UserDto(
-                userEntity.getUserSeq(),
-                userEntity.getUserId(),
-                userEntity.getUserEmail(),
-                userEntity.getUserPassword(),
-                userEntity.getUserName(),
-                userEntity.getUserNickname(),
-                userEntity.getUserRegDate(),
-                userEntity.getUserGender(),
-                userEntity.getUserAge(),
-                userEntity.getUserLocation(),
-                userEntity.getUserRank(),
-                userEntity.getUserStatus(),
-                userEntity.getUserStackEntityList()
-        );
+        UserDto userDto = UserMapper.INSTANCE.userEntityToUserDto(userEntity);
 
         String result = changePassword();
 
         userDto.setUserPassword(passwordEncoder.encode(result));
 
-        userEntity = UserEntity.builder()
-                .userSeq(userDto.getUserSeq())
-                .userId(userDto.getUserId())
-                .userEmail(userDto.getUserEmail())
-                .userPassword(userDto.getUserPassword())
-                .userName(userDto.getUserName())
-                .userNickname(userDto.getUserNickname())
-                .userRegDate(userDto.getUserRegDate())
-                .userGender(userDto.getUserGender())
-                .userAge(userDto.getUserAge())
-                .userLocation(userDto.getUserLocation())
-                .userRank(userDto.getUserRank())
-                .userStatus(userDto.getUserStatus())
-                .build();
+        userEntity = UserMapper.INSTANCE.userDtoToUserEntity(userDto);
 
         userRepository.save(userEntity);
 
@@ -104,13 +72,9 @@ public class UserServiceImpl implements UserService {
         mailDto.setText("회원님의 임시 비밀번호는 [ " + result + " ] 입니다. 로그인 후 비밀번호를 변경해주세요.");
 
         mailUtil.sendMail(mailDto);
-
-        log.info("### findPassword.Service End !");
     }
 
     public static String changePassword() {
-        log.info("### changePassword.service Start !");
-
         String result = "";
         int idx = 0;
 
@@ -122,7 +86,6 @@ public class UserServiceImpl implements UserService {
             result += charSet[idx];
         }
 
-        log.info("### changePassword.service End !");
         return result;
     }
 

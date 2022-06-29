@@ -3,7 +3,6 @@ package com.cosmos.userservice.mapper;
 import com.cosmos.userservice.dto.UserDto;
 import com.cosmos.userservice.jpa.entity.UserEntity;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 @Mapper
