@@ -18,7 +18,5 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     // 아이디 찾기 로직(이메일 기준 회원 정보 가져오기)
     UserEntity findByUserEmail(String userEmail);
 
-    // 아이디 찾기 로직(이메일 기준 회원 정보 가져오기)
-    UserEntity findByUserEmail(String userEmail);
 
 }

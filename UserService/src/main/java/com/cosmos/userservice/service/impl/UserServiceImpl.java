@@ -101,16 +101,11 @@ public class UserServiceImpl implements UserService {
 
         log.info("### UserServiceImpl createUser Start!!");
 
-        log.info(userDto.getUserId());
-        boolean checkId = userCheckService.existsByUserId(userDto.getUserId());
-        log.info(userDto.getUserEmail());
-        boolean checkEmail = userCheckService.existsByUserEmail(userDto.getUserEmail());
-
-        if (!checkId) {
+        if (!userCheckService.existsByUserId(userDto.getUserId())) {
             log.info("### UserServiceImpl createUser 아이디 중복");
             throw new BadRequestException("아이디가 중복되었습니다.");
         }
-        if (!checkEmail) {
+        if (!userCheckService.existsByUserEmail(userDto.getUserEmail())) {
             log.info("### UserServiceImpl createUser 이메일 중복");
             throw new BadRequestException("이메일이 중복되었습니다");
         }
