@@ -2,10 +2,12 @@ package com.cosmos.userservice.service.impl;
 
 import com.cosmos.userservice.dto.MailDto;
 import com.cosmos.userservice.dto.UserDto;
+import com.cosmos.userservice.exception.exceptions.BadRequestException;
 import com.cosmos.userservice.exception.exceptions.NotFoundException;
 import com.cosmos.userservice.jpa.UserRepository;
 import com.cosmos.userservice.jpa.entity.UserEntity;
 import com.cosmos.userservice.mapper.UserMapper;
+import com.cosmos.userservice.service.UserCheckService;
 import com.cosmos.userservice.service.UserService;
 import com.cosmos.userservice.util.MailUtil;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final MailUtil mailUtil;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final UserCheckService userCheckService;
 
 
     @Override
@@ -91,6 +94,32 @@ public class UserServiceImpl implements UserService {
 
         throw new NotFoundException("사용자 정보를 찾을 수 없습니다"); // 정보가 없을 경우 404 Not Found
 
+    }
+
+    @Override
+    public void createUser(UserDto userDto) {
+
+        log.info("### UserServiceImpl createUser Start!!");
+
+        if (!userCheckService.existsByUserId(userDto.getUserId())) {
+            log.info("### UserServiceImpl createUser 아이디 중복");
+            throw new BadRequestException("아이디가 중복되었습니다.");
+        }
+        if (!userCheckService.existsByUserEmail(userDto.getUserEmail())) {
+            log.info("### UserServiceImpl createUser 이메일 중복");
+            throw new BadRequestException("이메일이 중복되었습니다");
+        }
+
+        log.info("### UserServiceImpl 저장 start!!");
+        userDto.setUserStatus(1);
+        userDto.setUserPassword(passwordEncoder.encode(userDto.getUserPassword()));
+
+        UserEntity userEntity = UserMapper.INSTANCE.userDtoToUserEntity(userDto);
+
+
+        userRepository.save(userEntity);
+
+        log.info("### Success!! UserServiceImpl createUser!!");
     }
 
 }
