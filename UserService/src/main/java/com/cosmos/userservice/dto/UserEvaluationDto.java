@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 
 @Data
 @AllArgsConstructor
@@ -12,5 +14,6 @@ import lombok.NoArgsConstructor;
 public class UserEvaluationDto {
     private Integer userEvaluationSeq;
     private String toUserId;
+    private Date createDate;
     private UserEntity user;
 }

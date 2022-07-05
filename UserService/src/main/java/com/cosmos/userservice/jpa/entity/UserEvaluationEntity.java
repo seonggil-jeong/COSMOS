@@ -8,8 +8,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -26,6 +28,10 @@ public class UserEvaluationEntity {
     @Column(length = 50)
     @NotNull
     private String toUserId; // 평가 받는 사람 Id
+
+
+    @CreationTimestamp
+    private Date createDate;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JsonIgnore
