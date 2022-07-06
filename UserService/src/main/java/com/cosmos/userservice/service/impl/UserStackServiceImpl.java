@@ -5,6 +5,7 @@ import com.cosmos.userservice.jpa.UserRepository;
 import com.cosmos.userservice.jpa.UserStackRepository;
 import com.cosmos.userservice.jpa.entity.UserEntity;
 import com.cosmos.userservice.jpa.entity.UserStackEntity;
+import com.cosmos.userservice.mapper.UserMapper;
 import com.cosmos.userservice.mapper.UserStackMapper;
 import com.cosmos.userservice.service.UserStackService;
 import lombok.RequiredArgsConstructor;
@@ -55,6 +56,34 @@ public class UserStackServiceImpl implements UserStackService {
 
     @Override
     public int updateStackInfoByUserId(List<UserStackDto> userStackDtoList, String userId) throws Exception {
+        log.debug(this.getClass().getName() + ".updateStackInfoByUserId Start!");
+
+        Optional<UserEntity> userEntityOptional = userRepository.findByUserId(userId);
+
+        // EntityList 초기화
+        List<UserStackEntity> userStackEntityList = new ArrayList<>();
+
+        // 기존에 Stack 정보 deleteAll 실행
+        userStackRepository.deleteAllByUser(userEntityOptional.get());
+
+        if (! userStackDtoList.isEmpty()) {
+
+            // DtoToEntity 변환 작업
+            userStackDtoList.forEach(userStackDto -> {
+
+                // TODO: 2022-07-06 front에서 사용자 정보가 함께 넘어온다면 없어도 가능
+                userStackDto.setUser(userEntityOptional.get());
+                //
+                userStackEntityList.add(UserStackMapper.INSTANCE.userStackDtoToUserStackEntity(userStackDto));
+
+            });
+
+            userStackRepository.saveAll(userStackEntityList);
+
+            log.debug(this.getClass().getName() + ".updateStackInfoByUserId End!");
+
+            return 1;
+        }
         return 0;
     }
 }

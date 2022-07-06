@@ -16,6 +16,8 @@ public interface UserStackRepository extends JpaRepository<UserStackEntity, Inte
 
     Optional<List<UserStackEntity>> findAllByUser(UserEntity user);
 
+    int deleteAllByUser(UserEntity user);
+
 
 
 }

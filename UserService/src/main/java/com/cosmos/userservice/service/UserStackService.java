@@ -17,6 +17,7 @@ public interface UserStackService {
 
     /**
      * 사용자 아이디 및 StackDtoList List<Integer(StackSeq)> 를 받아 deleteAll and saveAll
+     * 기존의 Stack 정보를 deleteAll 후 update 된 Stack 정보를 저장
      * @param userStackDtoList
      * @param userId
      * @return int ( 1 or 0 )
