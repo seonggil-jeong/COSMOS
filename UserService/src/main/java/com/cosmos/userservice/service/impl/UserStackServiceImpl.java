@@ -37,7 +37,7 @@ public class UserStackServiceImpl implements UserStackService {
         // UserStackEntityList 조회 By userEntity
         Optional<List<UserStackEntity>> userStackEntityList = userStackRepository.findAllByUser(userEntityOptional.get());
 
-        if (userStackDtoList.isEmpty()) {
+        if (userStackEntityList.isPresent()) {
 
             log.debug("list size : " + userStackEntityList.get().size());
 
