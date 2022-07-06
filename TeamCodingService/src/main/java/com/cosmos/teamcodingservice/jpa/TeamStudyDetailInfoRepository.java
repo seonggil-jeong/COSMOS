@@ -6,5 +6,5 @@ import javax.transaction.Transactional;
 
 @Transactional
 @Repository
-public interface TeamStudyUserInfoRepository {
+public interface TeamStudyDetailInfoRepository {
 }

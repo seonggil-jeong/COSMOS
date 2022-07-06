@@ -35,8 +35,6 @@ public class TeamStudyInfoEntity {
     private TeamCodingInfoEntity teamCodingInfo;
 
     @OneToMany(mappedBy = "teamStudyInfo")
-    private List<TeamStudyDetailEntity> teamStudyDetailEntityList = new ArrayList<>();
+    private List<TeamStudyDetailInfoEntity> teamStudyDetailEntityList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "teamStudyInfo")
-    private List<TeamStudyUserInfoEntity> teamStudyUserInfoEntityList = new ArrayList<>();
 }
